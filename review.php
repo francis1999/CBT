@@ -13,7 +13,7 @@ extract($_SESSION);
 include("database.php");
 if($submit=='Finish')
 {
-	mysql_query("delete from mst_useranswer where sess_id='" . session_id() ."'") or die(mysql_error());
+	mysqli_query($cn,"delete from mst_useranswer where sess_id='" . session_id() ."'") or die(mysql_error());
 	unset($_SESSION[qn]);
 	header("Location: welcome.php?".$links."");
 	exit;
@@ -29,7 +29,7 @@ if($submit=='Finish')
 
 <body>
 <?php
-include("header.php");
+include("admin/header.php");
 echo "<h1 class=head1> Review Question</h1>";
 
 if(!isset($_SESSION[qn]))
@@ -42,9 +42,9 @@ else if($submit=='Next Question' )
 	
 }
 
-$rs=mysql_query("select * from mst_useranswer where sess_id='" . session_id() ."'",$cn) or die(mysql_error());
-mysql_data_seek($rs,$_SESSION[qn]);
-$row= mysql_fetch_row($rs);
+$rs=mysqli_query($cn,"select * from mst_useranswer where sess_id='" . session_id() ."'") or die(mysql_error());
+mysqli_data_seek($rs,$_SESSION[qn]);
+$row= mysqli_fetch_row($rs);
 echo "<form name=myfm method=post action=review.php?".$links.">";
 $n=$_SESSION[qn]+1;
 echo "<p>Que ".  $n .": $row[2]</p>";
@@ -52,7 +52,7 @@ echo "<p class=".($row[7]==1?'tans':'style8').">(a) $row[3]</p>";
 echo "<p class=".($row[7]==2?'tans':'style8').">(b) $row[4]</p>";
 echo "<p class=".($row[7]==3?'tans':'style8').">(c) $row[5]</p>";
 echo "<p class=".($row[7]==4?'tans':'style8').">(d) $row[6]</p>";
-if($_SESSION[qn]<mysql_num_rows($rs)-1)
+if($_SESSION[qn]<mysqli_num_rows($rs)-1)
 echo "<tr><td><input type=submit name=submit value='Next Question'></form>";
 else
 echo "<tr><td><input type=submit name=submit value='Finish'></form>";

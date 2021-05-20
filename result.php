@@ -32,7 +32,7 @@ include 'connect.php';
 <body style="background: #f1f1f1;">
 
 <header class="hello">
-  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">COMPUTER BASED TEST (CBT)</p></b>
+  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">ASSESSMENT TEST (AT)</p></b>
  <a href='welcome.php?u5cf9e69df6using=<?php echo base64_encode($meid); ?>'><b><button style="margin-top: -50px; font-size:16px; margin-right:5px; float:right; border-radius:5px; background: skyblue; color: #fff;">Home</button></b></a>
 </header>
 

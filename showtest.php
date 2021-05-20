@@ -31,24 +31,24 @@ $login = base64_decode($_GET['u5cf9e69df6using']);
 </style>
 <body>
 <header class="hello">
-  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">COMPUTER BASED TEST (CBT)</p></b>
+  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">ASSESSMENT TEST (AT)</p></b>
  <a href='welcome.php?u5cf9e69df6using=<?php echo base64_encode($login); ?>'><b><button style="font-size:16px; margin-right:5px; float:right; border-radius:50%; background: skyblue; color: #fff;">Home</button></b></a>
 </header>
 <?php
 include("database.php");
 extract($_GET);
-$rs1=mysql_query("select * from mst_subject where sub_id=$subid");
-$row1=mysql_fetch_array($rs1);
+$rs1=mysqli_query($cn, "select * from mst_subject where sub_id=$subid");
+$row1=mysqli_fetch_array($rs1);
 echo "<br><br><h1 align=center><font color=blue> $row1[1]</font></h1>";
-$rs=mysql_query("select * from mst_test where sub_id=$subid");
-if(mysql_num_rows($rs)<1)
+$rs=mysqli_query($cn,"select * from mst_test where sub_id=$subid");
+if(mysqli_num_rows($rs)<1)
 {
 	echo "<br><br><h2 class=head1> No Examination Yet</h2>";
 	exit;
 }
 echo "<h2 class=head1> SELECT SUBJECT </h2>";
 
-while($row=mysql_fetch_row($rs))
+while($row=mysqli_fetch_row($rs))
 {
 
   echo"<center>

@@ -30,7 +30,7 @@ margin-top: -20px;
 <!-- Page Container -->
 <div class="w3-content w3-margin-top" style="max-width:1400px;">
 <header class="hello">
-  <p style="font-size:25px; margin-top:10px; text-align: center; font-weight: bold;">COMPUTER BASED TEST (CBT) <a href="signout.php"><button style="font-size:16px; margin-right:5px; float:right; border-radius:10px; background: skyblue; color: #fff;">Logout</button></a></p>
+  <p style="font-size:25px; margin-top:10px; text-align: center; font-weight: bold;">ASSESSMENT  TEST (AT) <a href="signout.php"><button style="font-size:16px; margin-right:5px; float:right; border-radius:10px; background: skyblue; color: #fff;">Logout</button></a></p>
  
 </header>
   <!-- The Grid -->

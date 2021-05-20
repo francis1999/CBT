@@ -47,7 +47,7 @@ if(!isset($_SESSION[sid]) || !isset($_SESSION[tid]))
 </style>
 <body>
 <header class="hello">
-  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">COMPUTER BASED TEST (CBT)</p></b>
+  <b><p style="font-size:25px; margin-left:5px; margin-top:10px; text-align: center;">ASSESSMENT TEST (AT)</p></b>
  <b><button onclick="window.history.go(-1);" style="font-size:16px; margin-right:5px; float:right; border-radius:10px; background: skyblue; color: #fff;">Back</button></b>
 </header>
 <br>
@@ -65,11 +65,11 @@ include("header.php");
 
 $query="select * from mst_question";
 
-$rs=mysql_query("select * from mst_question where test_id=$tid",$cn) or die(mysql_error());
+$rs=mysqli_query($cn, "select * from mst_question where test_id=$tid") or die(mysql_error());
 if(!isset($_SESSION[qn]))
 {
 	$_SESSION[qn]=0;
-	mysql_query("delete from mst_useranswer where sess_id='" . session_id() ."'") or die(mysql_error());
+	mysqli_query($cn,"delete from mst_useranswer where sess_id='" . session_id() ."'") or die(mysql_error());
 	$_SESSION[trueans]=0;
 
 }
@@ -97,7 +97,7 @@ $row[5]=htmlspecialchars($row[5]);
 $row[6]=htmlspecialchars($row[6]);
 $row[7]=htmlspecialchars($row[7]);
 
-				mysql_query("insert into mst_useranswer(sess_id, test_id, que_des, ans1,ans2,ans3,ans4,true_ans,your_ans) values ('".session_id()."', $tid,'$row[2]','$row[3]','$row[4]','$row[5]', '$row[6]','$row[7]','$ans')") or die(mysql_error());
+				mysqli_query($cn, "insert into mst_useranswer(sess_id, test_id, que_des, ans1,ans2,ans3,ans4,true_ans,your_ans) values ('".session_id()."', $tid,'$row[2]','$row[3]','$row[4]','$row[5]', '$row[6]','$row[7]','$ans')") or die(mysql_error());
 				if($ans==$row[7])
 				{
 							$_SESSION[trueans]=$_SESSION[trueans]+1;
@@ -107,8 +107,8 @@ $row[7]=htmlspecialchars($row[7]);
 		else if($submit=='Submit' && isset($ans))
 		{
 
-				mysql_data_seek($rs,$_SESSION[qn]);
-				$row= mysql_fetch_row($rs);
+				mysqli_data_seek($rs,$_SESSION[qn]);
+				$row= mysqli_fetch_row($rs);
 $row[1]=addslashes($row[1]);
 $row[2]=addslashes($row[2]);
 $row[3]=addslashes($row[3]);
@@ -123,7 +123,7 @@ $row[4]=htmlspecialchars($row[4]);
 $row[5]=htmlspecialchars($row[5]);
 $row[6]=htmlspecialchars($row[6]);
 $row[7]=htmlspecialchars($row[7]);
-				mysql_query("insert into mst_useranswer(sess_id, test_id, que_des, ans1,ans2,ans3,ans4,true_ans,your_ans) values ('".session_id()."', $tid,'$row[2]','$row[3]','$row[4]','$row[5]', '$row[6]','$row[7]','$ans')") or die(mysql_error());
+				mysqli_query($cn,"insert into mst_useranswer(sess_id, test_id, que_des, ans1,ans2,ans3,ans4,true_ans,your_ans) values ('".session_id()."', $tid,'$row[2]','$row[3]','$row[4]','$row[5]', '$row[6]','$row[7]','$ans')") or die(mysql_error());
 				if($ans==$row[7])
 				{
 							$_SESSION[trueans]=$_SESSION[trueans]+1;
@@ -134,7 +134,7 @@ $row[7]=htmlspecialchars($row[7]);
 
 
 
-				mysql_query("insert into mst_result(login,test_id,test_date,score) values('$login',$tid,'".date("d/m/Y")."',$_SESSION[trueans])") or die(mysql_error());
+				mysqli_query($cn,"insert into mst_result(login,test_id,test_date,score) values('$login',$tid,'".date("d/m/Y")."',$_SESSION[trueans])") or die(mysql_error());
 
 				echo "<h1 align=center><a href=review.php?u5cf9e69df6using=".base64_encode($login)."> Review Question</a> </h1>";
 				unset($_SESSION[qn]);
@@ -147,8 +147,8 @@ $ins2="INSERT INTO mst_timer(remain_time,question_id,student_id)VALUES(0,'$tid',
 		$ms2=mysqli_query($connect, $ins2);
 		}
 }
-$rs=mysql_query("select * from mst_question where test_id=$tid",$cn) or die(mysql_error());
-if($_SESSION[qn]>mysql_num_rows($rs)-1)
+$rs=mysqli_query($cn,"select * from mst_question where test_id=$tid") or die(mysql_error());
+if($_SESSION[qn]>mysqli_num_rows($rs)-1)
 {
 unset($_SESSION[qn]);
 echo "<h1 class=head1>No Question yet</h1>";
@@ -156,8 +156,8 @@ session_destroy();
 
 exit;
 }
-mysql_data_seek($rs,$_SESSION[qn]);
-$row= mysql_fetch_row($rs);
+mysqli_data_seek($rs,$_SESSION[qn]);
+$row= mysqli_fetch_row($rs);
 echo "<form name=myfm method=post action=quiz.php?u5cf9e69df6using=".base64_encode($login).">";
 $n=$_SESSION[qn]+1;
 echo"<div style='margin-left:15%; margin-top:3%; border:2px solid #000; width:50%; padding:0px 40px 0px 20px;
@@ -170,7 +170,7 @@ echo "<p>(b)<input type=radio name=ans value=2>$row[4]</p>";
 echo "<p>(c)<input type=radio name=ans value=3>$row[5]</p>";
 echo "<p>(d)<input type=radio name=ans value=4>$row[6]</p>";
 echo"</div>";
-if($_SESSION[qn]<mysql_num_rows($rs)-1)
+if($_SESSION[qn]<mysqli_num_rows($rs)-1)
 echo "<p><input type=submit name=submit value='Next Question'></p></form>";
 else
 echo "<p><input type=submit name=submit value='Submit' id='submitbtn'></p></form>";
